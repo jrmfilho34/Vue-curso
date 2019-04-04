@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8"/>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+	<title>Título da Página (Estrutura básica de uma página com HTML 5)</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div class="container">
+	 <div id="app">
+	  <!-- 1) exibir em resultado o texto valor diferente enquanto valor for diferente de 37-->
+	  <!-- 2) Monitorar as mudanças de resultado e reniciar o valor para 0 depois de 5 segundos. (dica : setTimeout(....,5000))-->
+	  <div>
+	  	<p>Valor atual: {{ valor }}</p>
+	  	<button @click="valor +=5">Somar 5</button>
+	  	<button @click="valor +=1">Somar 1</button>
+	  	<p>{{ resultado }}</p>
+	  </div>
+	</div>
+</div>
+
+</body>
+<script>
+var app = new Vue({
+  el: '#app',
+  data: {
+  	valor:0,
+  },
+
+  computed:{
+      resultado(){
+      	return (this.valor != 37)? 'valor diferente':'valor igual';
+      	
+      }
+  },
+  watch:{
+     resultado(novo,antigo){
+     	console.log(novo, antigo)
+     	setTimeout(()=>{
+           this.valor = 0
+     	},5000)
+     }
+  },
+
+  methods:{
+
+  }
+})
+</script>
+</html>

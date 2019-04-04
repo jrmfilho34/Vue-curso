@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8"/>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+	<title>Título da Página (Estrutura básica de uma página com HTML 5)</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div class="container">
+	 <div id="app">
+	  {{ contador }}
+	  <input type="number" v-model:value="passo">
+	  <button @click.prevent.stop="soma()" class="btn btn-success">Somar</button> 
+	  <hr>
+	  <p @mousemove="atualizarXY">Mouse: {{ x }} e {{ y }} <span @mousemove.stop="callback">parar aqui</span></p>
+	  <hr>
+	  <input type="text" :value="contador" name="">
+	  <input type="text" v-on:keyup.enter="exibirAlerta">
+	</div>
+</div>
+
+</body>
+<script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    contador: 0,
+    x: 0,
+    y:0,
+    passo: 1,
+  },
+  methods:{
+  	soma(){
+  		this.contador = this.contador + this.passo;
+  	},
+  	atualizarXY(e){
+        this.x = e.clientX;
+        this.y = e.clientY;
+  	},
+  	exibirAlerta(){
+  		alert('Estou alertando')
+  	}
+  }
+
+})
+</script>
+</html>
