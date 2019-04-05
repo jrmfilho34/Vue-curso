@@ -1,0 +1,143 @@
+<link rel="stylesheet" href="styles.css">
+<script src="https://unpkg.com/vue"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<style>
+	#efeito {
+	width: 100px;
+	height: 100px;
+	border: 1px solid black;
+}
+
+.destaque {
+	background-color: red;
+	width: 200px !important;
+}
+
+.encolher {
+	background-color: gray;
+	width: 50px !important;
+}
+.classe1{
+	background-color: #3c3c3c;
+	color : #fff;
+	font-size: 36px;
+	text-transform: inherit;
+	width: 20%;
+}
+.classe2 {
+	padding: 20px 20px;
+	box-shadow: 10px 10px;
+	border: 2px solid #676767;
+}
+.controle{
+		padding: 20px 20px;
+	box-shadow: 10px 10px;
+	border: 2px solid #676767;
+}
+.barra-progress{
+	height: 30px;
+
+}
+</style>
+
+<div id="desafio" class="container">
+	<!-- 1) Iniciar a execução do efeito usando botão. 
+    O efeito deve alternadamente trocar as classes "destaque" e
+    "encolher" para cada chamada de setInteval. Use a div abaixo
+	com id "efeito" para associar as classes CSS. -->
+	<h2>#01</h2>
+	<div>
+		<button @click="iniciarEfeito">Iniciar Efeito</button>
+		<div id="efeito" :class="classe"></div>
+	</div>
+	
+	<!-- 2) Crie duas classes CSS e associe a div usando a
+		sintaxe de array -->
+	<h2>#02</h2>
+	<div :class="[ class1, class2]">Estou sem classe CSS :)</div>
+
+	<!-- 3) Aplique na div abaixo a classe informada pelo usuário
+		(crie classe CSS de exemplo). -->
+	<h2>#03</h2>
+	<div>
+
+		<input type="text" v-model="variavel">
+		<div :class="variavel">loLorem ipsum non incididunt nulla.</div>
+	</div>
+
+	<!-- 4) Aplique na div abaixo a classe informada pelo usuário e
+    outra classe usando o valor true/false (crie classes CSS de exemplo). -->
+	<h2>#04</h2>
+	<div>
+			<label>destaque, encolher, classe1,classe2</label><br>
+		<input type="text" v-model="aplicaClasse">
+		<input type="boolean" @input="setControle">
+		<div :class="[aplicaClasse,{controle}]">Human tiger-team camera cyber-crypto-apophenia garage drugs modem footage skyscraper vehicle. Corporation physical j-pop nano-camera assassin futurity office market plastic engine Legba silent drone. Rain neon warehouse beef noodles singularity courier paranoid. Pre-rifle numinous youtube disposable katana boy nano-papier-mache franchise market tanto paranoid. Realism drugs pistol artisanal denim plastic advert math-soul-delay wristwatch skyscraper receding voodoo god urban warehouse convenience store nano. Footage silent table tanto rebar knife Chiba neural-space into apophenia drugs otaku decay media geodesic. </div>
+	</div>
+
+	<!-- 5) Repita 3) mas utilizando estilos ao invés de classes CSS.
+    Associe os estilos a div abaixo  -->
+	<h2>#05</h2>
+	<div>
+		<input type="text" v-model="cor5">
+		<div :style="[estilo5,{backgroundColor: cor5}]"></div>
+	</div>
+
+	<!-- 6) Crie uma barra de progresso simples com setInterval 
+    e binding de estilo. -->
+	<h2>#06</h2>
+	<div>
+		<button @click="iniciarProgresso">Iniciar</button><br><hr>
+		<div class="progress">
+		  <div class="progress-bar bg-success" 
+		       role="progressbar" 
+		       :style="{width}" aria-valuenow="25" 
+		       aria-valuemin="0" aria-valuemax="100"></div>
+		</div>
+		<br><br><hr>
+	</div>
+</div>
+<script>
+	new Vue({
+	el: '#desafio',
+	data: {
+         classe:'',
+         class1:'classe1',
+         class2:'classe2',
+         variavel:'',
+         aplicaClasse:'',
+         controle:true,
+         cor5:'',
+         estilo5:{
+         	width: '100px',
+         	height: '100px',
+         },
+         width:'0',
+	},
+	watch:{
+
+	},
+	methods: {
+		iniciarEfeito() {
+			this.classe = this.classe == 'encolher'? 'destaque':'encolher';
+		},
+		iniciarProgresso() {
+			let valor =0
+			const temporizador = setInterval(()=>{
+				valor += 5
+				this.width = `${valor}%`;
+				if(valor ==100)clearInterval(temporizador)
+			},500)
+		},
+		setControle(){
+			if (event.target.value =="true") {
+				console.log(this.controle)
+				this.controle = true
+			}else if( event.target.value == "false"){
+				this.controle = false
+				console.log(this.controle)
+			}
+		}
+	}
+})
+</script>
