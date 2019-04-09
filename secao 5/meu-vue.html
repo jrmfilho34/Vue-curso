@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+<div id="app">
+	{{nome }} = {{ 1+ 1}}
+</div>
+</body>
+<script>
+	function MeuVue(params){
+		this.$el = document.querySelector(params.el)
+		this.$data = params.data
+		for( let atr in this.$data){
+			Object.defineProperty(this,atr,{
+				get:() => {
+                   return this.$data[atr]
+				},
+				set: value =>{
+					this.$data[atr] = value
+				}
+			})
+		}
+		//interpolar
+		const regex = /\{\{([\s\s\w+]*)\}\}/g
+		this.$el.innerHTML = this.$el.innerHTML.replace(regex,(macth,$1)=>{
+			const value = this[$1.trim()]
+			return value? value: eval($1)
+		})
+	}
+
+	const vm = new MeuVue({
+		el: '#app',
+		data:{
+			nome:'Miliano',
+			sobrenome: 'Silva'
+		}
+
+	})
+	console.log(vm.nome)
+</script>
+</html>
