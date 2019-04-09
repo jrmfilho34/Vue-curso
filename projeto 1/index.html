@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8"/>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+	<title>Matador de monstro</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<style>
+	.centralizado {
+	  text-align: center;
+	}
+	.centrar {
+       left: 50%;
+	}
+</style>
+<body>
+<div class="container">
+	 <div id="app">
+	 	<div class="row">
+	 		<nav class="navbar navbar-light bg-light">
+			  <a class="navbar-brand" href="#">{{ titulo }} </a>
+			</nav>	
+	 	</div> <!--  fim row 1 -->
+	  	<div class="row">
+	  		<div class="col-6">
+	  			<h3>Jogador - {{ valor + valor2 + valor3}} - {{valor}} -{{valor2}} -{{valor3}}</h3>
+				<div class="progress">
+				  <div class="progress-bar bg-danger" 
+				       role="progressbar" v-bind:style="{width:widthVermelho}" aria-valuenow="15" 
+				       aria-valuemin="0" aria-valuemax="100">   
+				  </div>
+				  <div class="progress-bar bg-success" role="progressbar" 
+				       :style="{width:widthVerde}" aria-valuenow="30" aria-valuemin="0" 
+				       aria-valuemax="100">     
+				  </div>
+				  <div class="progress-bar bg-info" role="progressbar" 
+				       :style="{width: widthAzul}" aria-valuenow="20" aria-valuemin="0" 
+				       aria-valuemax="100">    	
+				   </div>
+				</div>
+            </div> <!--  fim col 1 -->
+            <div class="col-6">
+            	<h3>Monstro - {{ valor4 + valor5 + valor6}} - {{ valor4}} - {{valor5}} - {{valor6}}</h3>
+            	<div class="progress">
+				  <div class="progress-bar bg-danger" 
+				       role="progressbar" :style="{width: MwidthVermelho}" aria-valuenow="15" 
+				       aria-valuemin="0" aria-valuemax="100">   
+				  </div>
+				  <div class="progress-bar bg-success" role="progressbar" 
+				       :style="{width: MwidthVerde}" aria-valuenow="30" aria-valuemin="0" 
+				       aria-valuemax="100">     
+				  </div>
+				  <div class="progress-bar bg-info" role="progressbar" 
+				       :style="{width:MwidthAzul}" aria-valuenow="20" aria-valuemin="0" 
+				       aria-valuemax="100">    	
+				   </div>
+				</div>
+            </div>  <!-- fim col 2 -->
+	  	</div><!--  fim row 2 -->
+	  	<hr>
+	  	<div class="row">
+	  		<div v-if="!vencedor" class="col-12">
+	  			<div v-if="!flag" class="centralizado">
+	  				<button type="button" @click="flag = !flag" class="btn btn-dark">Iniciar o jogo</button>
+	  			</div>
+	  			<div v-else class="centralizado">
+			  		<button type="button" class="btn btn-warning" @click="ataque">Ataque</button>
+					<button type="button" class="btn btn-info">Ataque especial</button>
+					<button type="button" class="btn btn-success" @click="curar">Curar</button>
+					<button type="button" @click="flag = !flag" class="btn btn-dark">Desistir</button>
+				</div>
+			</div>
+			<div v-else class="centralizado">
+				<div v-if="!jogador" class="alert alert-success" role="alert">
+				  Parabéns vc venceu!
+				  <button type="button" class="btn btn-warning" @click="resetar">Sair</button>
+				</div>
+				<div v-else class="alert alert-danger" role="alert">
+				  Vc foi derrotado!
+				  <button type="button" class="btn btn-warning" @click="resetar">Sair</button>
+				</div>
+				 
+			</div>
+	  	</div> <!-- fim row 3 -->
+	  	<div class="row">
+	  		<div class="col">
+	  			<ul v-if="flag"class="list-group list-group-flush">
+				  <li v-for="(item,index) in armazena" class="list-group-item">
+				  	<template v-if="index % 2 == 0">
+				  	           Jogador atingiu com a força de = {{item}}
+				  	</template>
+				  	<template v-else>
+				  		  O monstro atingiu com a força de  = {{item}} 
+				  	</template>
+				  	
+				  </li>
+				</ul>
+	  		</div>	
+	  	</div>
+	</div> <!-- fim app -->
+</div>
+
+</body>
+<script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    titulo: 'Jogo do Monstro!',
+    widthVerde:'30%',
+    widthVermelho:'30%',
+    widthAzul:'40%',
+    MwidthVerde:'30%',
+    MwidthVermelho:'30%',
+    MwidthAzul:'40%',
+    valor:40,
+    valor2:30,
+    valor3:30,
+    valor4:40,
+    valor5:30,
+    valor6:30,
+    jogador:false,
+    cont:1,
+    cont1:1,
+    vencedor:false,
+    x:0,
+    y:0,
+    armazena:[],
+    flag:false,
+  },
+  methods:{
+  	ataque(){
+	  	   this.x = Math.ceil(Math.random()*10)  //jogador
+	       this.y = Math.ceil(Math.random()*10)  //monstro
+    //Monstro
+	  	if(this.cont1 == 1){
+	       this.valor4 -= this.y
+	       this.MwidthAzul =`${this.valor4}%`
+	       this.armazena.push(this.y)
+	       if (this.valor4 < 1 ) { this.cont1 = 2; this.valor4 =0; this.MwidthAzul=0}
+	     }
+	     if(this.cont1 ==2){
+	       this.valor5 -= this.y
+	       this.MwidthVerde =`${this.valor5}%`
+	       this.armazena.push(this.y)
+	       if (this.valor5 < 1 ) { this.cont1 = 3;this.valor5 =0;this.MwidthVerde =0}
+	     }
+	     if (this.cont1 == 3) {
+	     	this.valor6 -= this.y
+	     	this.MwidthVermelho = `${this.valor6}%`
+	     	this.armazena.push(this.y)
+	     	if(this.valor6 < 1){
+	     		this.cont1 = 4
+	     		this.valor6 =0
+	     		this.MwidthVermelho =0
+	     	}
+	     }
+    // Jogador
+	  	if(this.cont == 1){
+	       this.valor -= this.x
+	       this.widthAzul = `${this.valor}%`
+	       this.armazena.push(this.x)
+	       if (this.valor < 1 ) { this.cont = 2; this.valor =0; this.widthAzul =0}
+	     }
+	     if(this.cont ==2){
+	       this.valor2 -= this.x
+	       this.widthVerde = `${this.valor2}%`
+	       this.armazena.push(this.x)
+	       if (this.valor2 < 1 ) { this.cont = 3; this.valor2 =0; this.widthVerde=0}
+	     }
+	     if (this.cont == 3) {
+	     	this.valor3 -= this.x
+	     	this.widthVermelho = `${this.valor3}%`
+	     	this.armazena.push(this.x)
+	     	if(this.valor3 < 1){
+	     		this.cont = 4;
+	     		this.valor3 =0; 
+	     		this.widthVermelho =0; 
+	     		}
+	     }
+	   //vencedor
+	     if(this.cont == 4)
+	     {
+            this.vencedor = true;  
+            this.jogador = true;
+	     }
+	     if(this.cont1 == 4){
+           this.vencedor = true;
+	     }
+  	},
+  	resetar()
+  	{
+	    this.widthVerde='30%'
+	    this.widthVermelho='30%'
+	    this.widthAzul='40%'
+	    this.MwidthVerde='30%'
+	    this.MwidthVermelho='30%'
+	    this.MwidthAzul='40%'
+	    this.valor=40
+	    this.valor2=30
+	    this.valor3=30
+	    this.valor4=40
+	    this.valor5=30
+	    this.valor6=30
+	    this.jogador=false
+	    this.cont=1
+	    this.cont1=1
+	    this.vencedor=false
+	    this.x=0
+	    this.y=0
+	    this.armazena=[]
+	    this.flag=false
+         
+  	},
+  	curar(){
+  	   this.valor += Math.ceil(Math.random()*5);
+       this.widthAzul = `${this.valor}%`
+  	}
+  }
+})
+</script>
+</html>
