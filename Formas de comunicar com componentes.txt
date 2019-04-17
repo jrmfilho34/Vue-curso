@@ -1,0 +1,84 @@
+Formas de comunicar com componentes
+
+Entre componentes filhos
+   A- usando barramento
+      criar um arquivo barramento.js
+      criar uma nova instancia Vuejs
+			import Vue from 'vue'
+			export default new Vue({
+				methods:{
+					alterarIdade(idade){
+			           this.$emit('mudou',idade)
+					},
+					quandoIdadeMudar(callback){
+						this.$on('mudou',callback)
+					}
+				}
+			})
+	  criar uma funcao no componente que vai passar os valore
+		  alterarIdade(){
+	   	  	this.idade += 1
+	   	  	barramento.alterarIdade(this.idade)
+	   	  }
+	  criar uma funcao no componente que vai receber os valores
+			created(){
+		    	barramento.quandoIdadeMudar(idade =>{
+		    		this.idade = idade
+		    	})
+		    }
+
+
+   B- usando props
+     importar o componente1 com import
+	     import AppUsuarioInfo from './UsuarioInfo'
+     criar o componente1 dentro do componente2
+         components: { AppUsuarioInfo, AppUsuarioEditar },
+     Ir até o componente1 e criar o dado pelo props
+		    props:{
+		    	nome:{
+		    		type: String,
+		    		//required: true,
+		    		//default:'Anônimo'
+		    		default: function(){
+		    			return Array(10).fill(0).join(',')
+		    		}
+		    	},
+		    	reiniciarFn: Function,
+		    	idade: Number
+		    },
+    criar dentro do componente1 a referencia do variavel
+                <p>Nome do usuário: {{ inverterNome() }}</p>
+        <p> idade é :{{ idade }}</p>
+        <button @click="ReiniciarNome"> Reiniciar Nome</button>
+        <button @click="reiniciarFn">Reiniciar 2</button>
+    Passar pelo componente 2 o valor das variaveis
+       <Citacao :texto= "citacoes[indice].texto"></Citacao>
+
+
+    C- USANDO SLOT
+
+     importar o componente1 com import
+	     import AppUsuarioInfo from './UsuarioInfo'
+     criar o componente1 dentro do componente2
+         components: { AppUsuarioInfo, AppUsuarioEditar },
+     criar o slot dentro do componente2
+	    <div class="citacao">
+	    	<slot></slot>
+	    </div>
+	 passar no componente 1 os valores, dentro do componente criado
+
+Entre componente pais e filhos
+
+   usando props
+
+Entre filhos e pais
+    filho:
+
+    data(){
+       name:''
+    }
+	this.$emit('nome',{name:this.name})
+
+	ir no pai:
+
+	<componente @nome = "funcao"> ou @nome="funcao($event)"
